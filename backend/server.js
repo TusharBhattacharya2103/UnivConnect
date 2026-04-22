@@ -13,7 +13,7 @@ const io = new Server(server, {
   cors: {
     origin: function(origin, callback) {
       const allowed = [
-        process.env.CLIENT_URL,
+        'https://univconnect.vercel.app',  // ← changed
         'http://localhost:3000'
       ];
       if (!origin || allowed.indexOf(origin) !== -1) {
@@ -32,7 +32,7 @@ connectDB();
 app.use(cors({
   origin: function(origin, callback) {
     const allowed = [
-      process.env.CLIENT_URL,
+      'https://univconnect.vercel.app',  // ← changed
       'http://localhost:3000'
     ];
     if (!origin || allowed.indexOf(origin) !== -1) {
@@ -43,9 +43,8 @@ app.use(cors({
   },
   credentials: true
 }));
-app.use(express.json());
 
-// Attach io to app so controllers can emit socket events
+app.use(express.json());
 app.set('io', io);
 
 app.use('/api/auth', require('./routes/authRoutes'));
