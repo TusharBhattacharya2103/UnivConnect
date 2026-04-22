@@ -9,40 +9,21 @@ const { initSocket } = require('./socket/socketHandler');
 const app = express();
 const server = http.createServer(app);
 
+// Simple CORS - allow all origins
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
+
 const io = new Server(server, {
   cors: {
-    origin: function(origin, callback) {
-      const allowed = [
-        'https://univconnect.vercel.app',  // ← changed
-        'http://localhost:3000'
-      ];
-      if (!origin || allowed.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: true,
     methods: ['GET', 'POST'],
     credentials: true
   }
 });
 
 connectDB();
-
-app.use(cors({
-  origin: function(origin, callback) {
-    const allowed = [
-      'https://univconnect.vercel.app',  // ← changed
-      'http://localhost:3000'
-    ];
-    if (!origin || allowed.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
 
 app.use(express.json());
 app.set('io', io);
